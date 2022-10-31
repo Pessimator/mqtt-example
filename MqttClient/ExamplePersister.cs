@@ -14,6 +14,7 @@ namespace MqttExampleClient.ExamplePersister
         public ExampleFilePersister(string filePath)
         {
             m_filePath = filePath;
+            this.WriteOut(DateTime.Now.ToLocalTime().ToString(), false).Wait();
         }
         public async Task WriteOut(string message, bool append = true)
         {
