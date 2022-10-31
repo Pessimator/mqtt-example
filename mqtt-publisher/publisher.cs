@@ -1,7 +1,7 @@
 ﻿using MqttExample.Model;
-using MqttExampleClient;
 using MqttExampleClient.ExampleLogger;
 using MqttExampleClient.ExamplePersister;
+using MqttExampleClient.ExampleSensorValidator;
 using System.Text.Json;
 
 
@@ -14,7 +14,7 @@ namespace mqtt_publisher
             string logfilePath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "logfile.json");
             var exampleLogger = new ExampleConsoleLogger();
             var examplePersister = new ExampleFilePersister(logfilePath);
-            var exampleSensorValidator = new MqttExampleClient.ExampleSensorValidator.ExampleSensorValidator(exampleLogger, 1000);
+            var exampleSensorValidator = new ExampleSensorValidator(exampleLogger, 1000);
 
 
             var publisher = new MqttExampleClient.MqttExampleClient(exampleLogger, examplePersister, exampleSensorValidator);
