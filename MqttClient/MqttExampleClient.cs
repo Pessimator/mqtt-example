@@ -31,7 +31,7 @@ public class MqttExampleClient
 
     public async Task connect()
     {
-        var mqttClientOptions = new MqttClientOptionsBuilder().WithTcpServer("localhost").Build();
+        var mqttClientOptions = new MqttClientOptionsBuilder().WithTcpServer("localhost").WithWillQualityOfServiceLevel(MQTTnet.Protocol.MqttQualityOfServiceLevel.ExactlyOnce).Build();
         await m_mqttClient.ConnectAsync(mqttClientOptions, CancellationToken.None);
         m_logger.Log("The MQTT client is connected.");
     }

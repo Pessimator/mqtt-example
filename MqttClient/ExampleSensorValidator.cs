@@ -12,7 +12,7 @@ namespace MqttExampleClient.ExampleSensorValidator
     public class ExampleSensorValidator : ISensorValidator
     {
 
-        public ExampleSensorValidator(IExampleLogger logger, double timeoutValueInMs = 1000)
+        public ExampleSensorValidator(IExampleLogger logger, double timeoutValueInMs = 5000)
         {
             m_logger = logger;
             m_timeoutValueInMs = timeoutValueInMs;
@@ -29,7 +29,7 @@ namespace MqttExampleClient.ExampleSensorValidator
         {
             m_dataReceived = true;
             m_lastTimeStamp = m_lastTimeStamp > timestamp ? m_lastTimeStamp : timestamp;
-        }
+        } 
 
 
         public bool IsTimeout()
