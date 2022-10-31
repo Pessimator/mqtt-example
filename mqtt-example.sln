@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32929.385
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mqtt-publisher", "mqtt-publisher\mqtt-publisher.csproj", "{DB68D368-9FFE-4221-9E1B-4EFBCE5B977D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{172B355D-CDD3-4A2D-8B46-4857939C69FF} = {172B355D-CDD3-4A2D-8B46-4857939C69FF}
+		{7883688A-AE46-4963-8EC1-46F020B7FF7B} = {7883688A-AE46-4963-8EC1-46F020B7FF7B}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mqtt-subscriber", "mqtt-subscriber\mqtt-subscriber.csproj", "{0814730D-A34C-46DF-AA8C-78A523C99370}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{7883688A-AE46-4963-8EC1-46F020B7FF7B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MqttExampleClient", "MqttClient\MqttExampleClient.csproj", "{172B355D-CDD3-4A2D-8B46-4857939C69FF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DB68D368-9FFE-4221-9E1B-4EFBCE5B977D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB68D368-9FFE-4221-9E1B-4EFBCE5B977D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB68D368-9FFE-4221-9E1B-4EFBCE5B977D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB68D368-9FFE-4221-9E1B-4EFBCE5B977D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0814730D-A34C-46DF-AA8C-78A523C99370}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0814730D-A34C-46DF-AA8C-78A523C99370}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0814730D-A34C-46DF-AA8C-78A523C99370}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0814730D-A34C-46DF-AA8C-78A523C99370}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7883688A-AE46-4963-8EC1-46F020B7FF7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7883688A-AE46-4963-8EC1-46F020B7FF7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7883688A-AE46-4963-8EC1-46F020B7FF7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7883688A-AE46-4963-8EC1-46F020B7FF7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{172B355D-CDD3-4A2D-8B46-4857939C69FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{172B355D-CDD3-4A2D-8B46-4857939C69FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{172B355D-CDD3-4A2D-8B46-4857939C69FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{172B355D-CDD3-4A2D-8B46-4857939C69FF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B9C68260-DF3C-48C3-8D7C-58DD8C7F9BE0}
+	EndGlobalSection
+EndGlobal
