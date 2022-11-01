@@ -12,13 +12,14 @@ namespace MqttExampleClient;
 
 public class MqttExampleClient
 {
-    public MqttExampleClient(IExampleLogger logger, IExamplePersister persister, ISensorValidator validator)
+    public MqttExampleClient(IExampleLogger logger, IExamplePersister persister, ISensorValidator validator, IMqttStatusMonitor monitor)
     {
         m_mqttFactory = new MqttFactory();
         m_mqttClient = m_mqttFactory.CreateMqttClient();
         m_logger = logger;
         m_persister = persister;
         m_validator = validator;
+        m_monitor = monitor;
     }
 
     private MqttFactory m_mqttFactory { get; }
@@ -28,6 +29,8 @@ public class MqttExampleClient
     private IExamplePersister m_persister { get; }
 
     private ISensorValidator m_validator { get; }
+
+    private IMqttStatusMonitor m_monitor;
 
     public async Task connect()
     {
@@ -67,6 +70,7 @@ public class MqttExampleClient
             m_logger.Log(decodedPayload, timestamp);
             m_persister.WriteOut(decodedPayload);
             m_validator.updateTimestamp(timestamp);
+            m_monitor.addTemperatureMessage((ExampleMsg)msg);
 
             return Task.CompletedTask;
         };

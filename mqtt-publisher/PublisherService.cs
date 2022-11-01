@@ -21,9 +21,9 @@ namespace mqtt_publisher
             var exampleLogger = new ExampleConsoleLogger();
             var examplePersister = new ExampleFilePersister(logfilePath);
             var exampleSensorValidator = new ExampleSensorValidator(exampleLogger, 1000);
+            var exampleStatusMonitor = new ExampleMqttStatusMonitor(exampleLogger);
 
-
-            var publisher = new MqttExampleClient.MqttExampleClient(exampleLogger, examplePersister, exampleSensorValidator);
+            var publisher = new MqttExampleClient.MqttExampleClient(exampleLogger, examplePersister, exampleSensorValidator, exampleStatusMonitor);
             publisher.connect().Wait();
 
             sendTemperature(publisher);

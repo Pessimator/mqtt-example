@@ -1,4 +1,6 @@
-﻿using MqttExampleClient.ExampleLogger;
+﻿using MqttExample.Model;
+using MqttExampleClient;
+using MqttExampleClient.ExampleLogger;
 using MqttExampleClient.ExamplePersister;
 using MqttExampleClient.ExampleSensorValidator;
 
@@ -7,22 +9,43 @@ namespace mqtt_subscriber
     public interface IMqttSubscriberService
     {
         void startSubscriber();
+        List<ExampleMsg> GetExampleMsgs();
     }
 
     public class ExampleMqttSubscriberService : IMqttSubscriberService
     {
-        public void startSubscriber()
+        private ExampleConsoleLogger m_exampleLogger;
+        private ExampleFilePersister m_examplePersister;
+        private ExampleSensorValidator m_exampleSensorValidator;
+        private ExampleMqttStatusMonitor m_exampleStatusMonitor;
+        private MqttExampleClient.MqttExampleClient? m_subscriber;
+
+        public ExampleMqttSubscriberService()
         {
             string logfilePath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "logfile.json");
-            var exampleLogger = new ExampleConsoleLogger();
-            var examplePersister = new ExampleFilePersister(logfilePath);
-            var exampleSensorValidator = new ExampleSensorValidator(exampleLogger);
 
+            m_exampleLogger = new ExampleConsoleLogger();
+            m_examplePersister = new ExampleFilePersister(logfilePath);
+            m_exampleSensorValidator = new ExampleSensorValidator(m_exampleLogger);
+            m_exampleStatusMonitor = new ExampleMqttStatusMonitor(m_exampleLogger);
+            
 
-            var subscriber = new MqttExampleClient.MqttExampleClient(exampleLogger, examplePersister, exampleSensorValidator);
-            validateTimeout(exampleSensorValidator);
-            subscriber.connect().Wait();
-            subscriber.attachSubscriber().Wait();
+        }
+
+        public List<ExampleMsg> GetExampleMsgs()
+        {
+            return m_exampleStatusMonitor.GetExampleMsgs();
+        }
+
+        public void startSubscriber()
+        {
+            if (m_subscriber == null)
+            {
+                m_subscriber = new MqttExampleClient.MqttExampleClient(m_exampleLogger, m_examplePersister, m_exampleSensorValidator, m_exampleStatusMonitor);
+                validateTimeout(m_exampleSensorValidator);
+                m_subscriber.connect().Wait();
+                m_subscriber.attachSubscriber().Wait();
+            }
         }
 
         private void validateTimeout(MqttExampleClient.ExampleSensorValidator.ExampleSensorValidator exampleSensorValidator)
