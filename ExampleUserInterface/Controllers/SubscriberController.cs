@@ -14,7 +14,6 @@ namespace Interface.Controllers
         public SubscriberController(IMqttSubscriberService mqqtSubscriber)
         {
             this.m_mqqtSubscriber = mqqtSubscriber;
-            m_mqqtSubscriber.startSubscriber();
         }
 
 

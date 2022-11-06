@@ -6,7 +6,6 @@ namespace mqtt_subscriber
 {
     public interface IMqttSubscriberService
     {
-        void startSubscriber();
         List<ExampleMsg> GetExampleMsgs();
     }
 
@@ -20,25 +19,22 @@ namespace mqtt_subscriber
 
         public ExampleMqttSubscriberService()
         {
-            string logfilePath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "logfile.json");
+            string logfilePath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "logfile.txt");
 
             m_exampleLogger = new ExampleConsoleLogger();
             m_examplePersister = new ExampleFilePersister(logfilePath);
             m_exampleSensorValidator = new ExampleSensorValidator(m_exampleLogger);
             m_exampleStatusMonitor = new ExampleMqttStatusMonitor(m_exampleLogger);
             m_client = new MqttExampleClient.MqttExampleClient(m_exampleLogger, m_examplePersister, m_exampleSensorValidator, m_exampleStatusMonitor);
+
+            validateTimeout(m_exampleSensorValidator);
+            m_client.connect().Wait();
+            m_client.attachSubscriber("exampleTemp", true).Wait();
         }
 
         public List<ExampleMsg> GetExampleMsgs()
         {
             return m_exampleStatusMonitor.GetExampleMsgs();
-        }
-
-        public void startSubscriber()
-        {
-            validateTimeout(m_exampleSensorValidator);
-            m_client.connect().Wait();
-            m_client.attachSubscriber("exampleTemp", true).Wait();
         }
 
         private void validateTimeout(ExampleSensorValidator exampleSensorValidator)

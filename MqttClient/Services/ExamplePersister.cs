@@ -18,7 +18,7 @@ namespace MqttExampleClient.Services
             using (FileStream stream = new FileStream(m_filePath, append ? FileMode.Append : FileMode.Create, FileAccess.Write, FileShare.None, 4096, true))
             using (StreamWriter sw = new StreamWriter(stream))
             {
-                await sw.WriteLineAsync(message);
+                await sw.WriteLineAsync(DateTime.Now.ToLocalTime().ToString() + ": " + message);
             }
         }
     }

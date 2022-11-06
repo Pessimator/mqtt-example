@@ -5,7 +5,6 @@
         static void Main(string[] args)
         {
             var service = new ExampleMqttSubscriberService();
-            service.startSubscriber();
             Console.ReadLine();
         }
 
