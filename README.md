@@ -25,8 +25,6 @@ Ensure that the producer recognizes a failure of the sensor (e.g. the sensor doe
 - Clean up the example webb app
 - dependency injection in subscriber and publisher
 - use .net core logger instead of own implementation
-- extract Interfaces to it's own folder and files
-- rename "Interface" project
 - add example unit test
 -- to service (mock client/network)
 -- to angular app?

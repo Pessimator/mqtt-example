@@ -1,18 +1,7 @@
-﻿using MqttExampleClient.ExampleLogger;
+﻿using MqttExampleClient.Interfaces;
 
-namespace MqttExampleClient.ExampleSensorValidator
+namespace MqttExampleClient.Services
 {
-
-    public interface ISensorValidator
-    {
-        bool IsTimeout();
-
-        void updateTimestamp(DateTime timestamp, int sequenceNumber);
-
-        int getLastSequenceNumberReceived();
-
-        bool anyDataReceived();
-    }
 
     public class ExampleSensorValidator : ISensorValidator
     {
@@ -36,14 +25,14 @@ namespace MqttExampleClient.ExampleSensorValidator
             m_lastSequenceNumber = sequenceNumber;
             m_dataReceived = true;
             m_lastTimeStamp = m_lastTimeStamp > timestamp ? m_lastTimeStamp : timestamp;
-        } 
+        }
 
 
         public bool IsTimeout()
         {
             if (m_dataReceived)
             {
-                return (Math.Abs((m_lastTimeStamp - DateTime.Now).TotalMilliseconds) > m_timeoutValueInMs) ? true : false;
+                return Math.Abs((m_lastTimeStamp - DateTime.Now).TotalMilliseconds) > m_timeoutValueInMs ? true : false;
             }
             return false;
         }

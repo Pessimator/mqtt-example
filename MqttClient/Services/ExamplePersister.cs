@@ -1,11 +1,8 @@
 ﻿using System.IO;
+using MqttExampleClient.ExamplePersister;
 
-namespace MqttExampleClient.ExamplePersister
+namespace MqttExampleClient.Services
 {
-    public interface IExamplePersister
-    {
-        public Task WriteOut(string messaage, bool append = true);
-    }
 
     public class ExampleFilePersister : IExamplePersister
     {
@@ -14,7 +11,7 @@ namespace MqttExampleClient.ExamplePersister
         public ExampleFilePersister(string filePath)
         {
             m_filePath = filePath;
-            this.WriteOut(DateTime.Now.ToLocalTime().ToString(), false).Wait();
+            WriteOut(DateTime.Now.ToLocalTime().ToString(), false).Wait();
         }
         public async Task WriteOut(string message, bool append = true)
         {

@@ -1,14 +1,8 @@
 ﻿using MqttExample.Model;
-using MqttExampleClient.ExampleLogger;
+using MqttExampleClient.Interfaces;
 
-namespace MqttExampleClient.ExampleSensorValidator
+namespace MqttExampleClient.Services
 {
-
-    public interface IMqttStatusMonitor
-    {
-        void addTemperatureMessage(ExampleMsg msg);
-        List<ExampleMsg> GetExampleMsgs();
-    }
 
     public class ExampleMqttStatusMonitor : IMqttStatusMonitor
     {

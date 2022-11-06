@@ -1,8 +1,6 @@
 ﻿using MqttExample.Model;
 using MqttExampleClient;
-using MqttExampleClient.ExampleLogger;
-using MqttExampleClient.ExamplePersister;
-using MqttExampleClient.ExampleSensorValidator;
+using MqttExampleClient.Services;
 
 namespace mqtt_subscriber
 {
@@ -48,7 +46,7 @@ namespace mqtt_subscriber
             }
         }
 
-        private void validateTimeout(MqttExampleClient.ExampleSensorValidator.ExampleSensorValidator exampleSensorValidator)
+        private void validateTimeout(ExampleSensorValidator exampleSensorValidator)
         {
             var task = Task.Run(async () =>
             {

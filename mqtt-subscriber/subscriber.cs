@@ -1,8 +1,4 @@
-﻿using MqttExampleClient.ExampleLogger;
-using MqttExampleClient.ExamplePersister;
-using MqttExampleClient.ExampleSensorValidator;
-
-namespace mqtt_subscriber
+﻿namespace mqtt_subscriber
 {
     class Program
     {

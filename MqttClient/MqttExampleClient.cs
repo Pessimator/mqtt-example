@@ -1,8 +1,7 @@
 ﻿
 using MqttExample.Model;
-using MqttExampleClient.ExampleLogger;
 using MqttExampleClient.ExamplePersister;
-using MqttExampleClient.ExampleSensorValidator;
+using MqttExampleClient.Interfaces;
 using MQTTnet;
 using MQTTnet.Client;
 using System.Text;

@@ -1,8 +1,6 @@
 ﻿
 using MqttExample.Model;
-using MqttExampleClient.ExampleLogger;
-using MqttExampleClient.ExamplePersister;
-using MqttExampleClient.ExampleSensorValidator;
+using MqttExampleClient.Services;
 using System.Text.Json;
 
 namespace mqtt_publisher
