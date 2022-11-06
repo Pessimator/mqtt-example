@@ -18,10 +18,18 @@ Ensure that the temperature values are displayed in exactly the same order as th
 Ensure that processing a temperature value on the consumer side is finished before the next one arrives
 Ensure that the producer recognizes a failure of the sensor (e.g. the sensor does not send values for 5 seconds)
 
+## Producer
+
+## Consumer/Subscriber
+
+## UserInterface
+
+
 
 
 
 ## Todos
+- Think about how to present the parts
 - Clean up the example webb app
 - dependency injection in subscriber and publisher
 - use .net core logger instead of own implementation
