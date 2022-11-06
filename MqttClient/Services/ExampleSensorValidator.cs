@@ -19,7 +19,6 @@ namespace MqttExampleClient.Services
         int m_lastSequenceNumber = -1;
 
 
-
         public void updateTimestamp(DateTime timestamp, int sequenceNumber)
         {
             m_lastSequenceNumber = sequenceNumber;

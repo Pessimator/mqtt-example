@@ -20,7 +20,7 @@ Ensure that the producer recognizes a failure of the sensor (e.g. the sensor doe
 
 
 ## Model - ExampleMsg
-Messages are of the type ExampleMsg containing a temperature reading and a sequence number. The sequencenumber member is basically the Id of an ExampleMsg.
+Messages are of the type ExampleMsg containing a temperature reading and a SequenceNumber. The sequencenumber member is basically the Id of an ExampleMsg.
 
 ## Mqtt-Client
 A wrapper-client for MQTTnet (https://github.com/dotnet/MQTTnet)
@@ -34,24 +34,24 @@ Several Services are available:
     ex: logfile.txt 
     ```
         06.11.2022 16:16:21: 06.11.2022 16:16:21
-        06.11.2022 16:16:26: {"m_sequenceNumber":1,"m_temperature":94.15508413184793}
-        06.11.2022 16:16:27: {"m_sequenceNumber":2,"m_temperature":74.86873894654242}
-        06.11.2022 16:16:27: {"m_sequenceNumber":3,"m_temperature":40.26409575280005}
-        06.11.2022 16:16:28: {"m_sequenceNumber":4,"m_temperature":49.48893982081599}
-        06.11.2022 16:16:28: {"m_sequenceNumber":5,"m_temperature":4.848380298923605}
+        06.11.2022 16:16:26: {"m_SequenceNumber":1,"m_temperature":94.15508413184793}
+        06.11.2022 16:16:27: {"m_SequenceNumber":2,"m_temperature":74.86873894654242}
+        06.11.2022 16:16:27: {"m_SequenceNumber":3,"m_temperature":40.26409575280005}
+        06.11.2022 16:16:28: {"m_SequenceNumber":4,"m_temperature":49.48893982081599}
+        06.11.2022 16:16:28: {"m_SequenceNumber":5,"m_temperature":4.848380298923605}
     ```
 - ISensorValidator
-    A service that is called once a message has been recieved. Provides information if a timeout has been detected and the last received sequenceNumber.
+    A service that is called once a message has been recieved. Provides information if a timeout has been detected and the last received SequenceNumber.
     If no message was received ever no timeouts are detected.
 
 - IMqttStatusMonitor
-    A service to store and retreiving the last 20 received exampleMsg.
+    A service to store and retreiving the last 20 received ExampleMsg.
 
 
 ## Producer (mqtt-publisher)
 Console application in C#
 - generates random temperature values
-- uses the mqtt-client to publish example messages containing temperature and a sequence number
+- uses the mqtt-client to publish example messages containing temperature and a SequenceNumber
 - can detect timeouts of subscribers where for a given time no response was received
 - can detect if a client is slow with processing previous example msg
 
@@ -68,25 +68,27 @@ Console application in C#
 
 ## Error handling
 ### Timeout
-MqqtClient/ExampleSensorValidator.cs
-Store received time and last received sequence number.
+Using the ExampleSensorValidator Service to store the received timestamp and last received SequenceNumber.
 
-Timeout is detected by comparing last received timestamp against a threshold time in milliseconds. If delta is big enough a timeout is detected.
-The publisher requires a confirmation message of the subscriber to confirm a timeout.
+Timeout is detected if:  ```Abs(lastTimeStamp - CurrentTimeStamp) > TimeoutValue```
+For the subscriber the ExampleMsg is sufficient for detecting a timeout.
+The publisher requires a confirmation message of the subscriber to confirm a timeout (Currently it is just mirroring the received ExampleMsg).
 
-### Sync-of publisher
-Confirmation message of subscriber to publisher contains the processed sequenceNumber. With this information the publisher can determine that the subscriber is out of sync with processing the last sent message due to several reasons (eg. network issues, delay in logging etc.)
+### Out of Sync
+A Confirmation message of subscriber to publisher containing the processed SequenceNumber. With this information the publisher is able to determine that the subscriber did or did not process the last sent message. There might be many reasons (eg. network issues, delay in logging etc.)
 
+Below is an example where:
+- first the publisher (upper console) is stopped which leads to timouts for subscriber (lower console) 
+- and then the subscriber (lower console) is stopped which leads to out of sync messages of publisher (upper console) to timeout in publisher once timeout time has elapsed.
 
-Below is an example where first the publisher (upper console) is stopped which leads to timouts for subscriber (lower console) and then the subscriber is stopped which leads to out of sync messages of publisher and finally to timeout in publisher.
 ![Timeout behavior](repo-ressources/Timeout.gif "Timeout behavior")
 
 ## UserInterface (ExampleUserInterface)
 The ExampleUserInterface is a AspNetCore WebApplication (C#) with a AngularJs client side app.
 
-Serverside the SubscriberService is used and a Controller to query the last 20 ExampleMsg (Temperature Readings) is added. The ExampleMsg are sorted by their sequence Number.
+Serverside the SubscriberService is used and a Controller is provided to query the last 20 ExampleMsg (Temperature/SequenceNumber pairs). The List of ExampleMsg is sorted by their SequenceNumber.
 
-The client periodically polls the latest 20 ExampleMsg to display them into a apexchart (x-values: sequenceNumber, y-values the temperature) and into a table below.
+The client periodically polls the latest 20 ExampleMsg to display them into a apexchart (x-values: SequenceNumber, y-values the Temperature) and into a table below.
 
 ![Example User Interface](repo-ressources/ExampleUserInterface.gif "Example User Interface")
 
@@ -94,13 +96,13 @@ The client periodically polls the latest 20 ExampleMsg to display them into a ap
 
 ## Todos
 - Clean up the example webb app
-- dependency injection in subscriber and publisher
+- proper dependency injection in subscriber and publisher
 - eventually find a better solution to return the 20 msgs from subscriber service
 - use .net core logger instead of own implementation
 - add example unit test
 -- to service (mock client/network)
 -- to angular app
-- add some kind of logic for understanding the sequenceNumber overflow (or at least calculate approximate runtime when it will occur) for subscriber
-- instead of magic numbers/ports/servernames use parameters of .net core
+- add some kind of logic to handle the SequenceNumber overflow (or at least calculate approximate runtime when it will occur) for subscriber
+- instead of magic numbers/ports/servernames use parameters of .net core (test/prod differences)
 - currently subscriber:publisher => 1:1, if multiple subscribers the logic in publisher will break
 
