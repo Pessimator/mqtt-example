@@ -21,8 +21,9 @@ namespace Interface.Controllers
         [HttpGet]
         public IEnumerable<ExampleMsg> Get()
         {
-            return m_mqqtSubscriber.GetExampleMsgs();
+            var tempMsg = m_mqqtSubscriber.GetExampleMsgs();
+            tempMsg.Sort();
+            return tempMsg;
         }
-
     }
 }

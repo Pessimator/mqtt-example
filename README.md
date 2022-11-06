@@ -22,10 +22,10 @@ Ensure that the producer recognizes a failure of the sensor (e.g. the sensor doe
 
 
 ## Todos
-- TR: sort in Interface by sequence number
 - TR: random temperature every 500ms
 - TR: should I send a message from client to Producer to tell him when processing is finished?
 - TR: tell the producer that a failure happened
+- Clean up the example webb app
 - dependency injection in subscriber and publisher
 - use .net core logger instead of own implementation
 - extract Interfaces to it's own folder and files

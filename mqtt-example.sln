@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Model\Model.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MqttExampleClient", "MqttClient\MqttExampleClient.csproj", "{172B355D-CDD3-4A2D-8B46-4857939C69FF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interface", "Interface\Interface.csproj", "{45EF3F3D-2CD7-4990-B58B-9891365D74F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleUserInterface", "Interface\ExampleUserInterface.csproj", "{45EF3F3D-2CD7-4990-B58B-9891365D74F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
