@@ -31,19 +31,21 @@ namespace mqtt_publisher
 
         private void sendTemperature(MqttExampleClient.MqttExampleClient publisher)
         {
-            float[] temperatures = { 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, -1.0f, 0.0f };
+            Random r = new Random();
+            double range = 100;
+
+
             int sequenceNumber = 0;
-            var index = -1;
             var task = Task.Run(async () =>
             {
                 while (true)
                 {
+                    var randomTemp = (((r.NextDouble() * 2) - 1.0) * range);
+
                     sequenceNumber = sequenceNumber > Int32.MaxValue ? 0 : ++sequenceNumber;
-                    index++;
-                    index = index > temperatures.Length - 1 ? 0 : index;
                     var msg = new ExampleMsg
                     {
-                        m_temperature = temperatures[index],
+                        m_temperature = randomTemp,
                         m_sequenceNumber = sequenceNumber
                     };
                     string jsonString = JsonSerializer.Serialize(msg);

@@ -4,7 +4,7 @@ namespace MqttExample.Model;
 public class ExampleMsg : IEquatable<ExampleMsg>, IComparable<ExampleMsg>
 {
     public int m_sequenceNumber { get; set; }
-    public float m_temperature { get; set; }
+    public double m_temperature { get; set; }
 
 
     public bool Equals(ExampleMsg? other)
