@@ -22,9 +22,6 @@ Ensure that the producer recognizes a failure of the sensor (e.g. the sensor doe
 
 
 ## Todos
-- TR: random temperature every 500ms
-- TR: should I send a message from client to Producer to tell him when processing is finished?
-- TR: tell the producer that a failure happened
 - Clean up the example webb app
 - dependency injection in subscriber and publisher
 - use .net core logger instead of own implementation
@@ -35,4 +32,5 @@ Ensure that the producer recognizes a failure of the sensor (e.g. the sensor doe
 -- to angular app?
 - add some kind of logic for understanding the sequenceNumber overflow (or at least calculate approximate runtime when it will occur)
 - instead of magic numbers/ports/servernames use parameters of .net core
+- currently subscriber:publisher => 1:1, if multiple subscriber some logic will break
 

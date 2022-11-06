@@ -25,4 +25,13 @@ namespace MqttExampleClient.ExamplePersister
             }
         }
     }
+
+    public class ExampleNonFilePersister : IExamplePersister
+    {
+        public Task WriteOut(string messaage, bool append = true)
+        {
+            // do nothing by design
+            return Task.FromResult(true);
+        }
+    }
 }

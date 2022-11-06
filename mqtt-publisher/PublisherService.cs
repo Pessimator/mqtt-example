@@ -15,21 +15,31 @@ namespace mqtt_publisher
 
     public class ExampleMqttPublisherService : IMqttPublisherService
     {
-        public void startPublisher()
+        private ExampleConsoleLogger m_exampleLogger;
+        private ExampleNonFilePersister m_examplePersister;
+        private ExampleSensorValidator m_exampleSensorValidator;
+        private ExampleMqttStatusMonitor m_exampleStatusMonitor;
+        private MqttExampleClient.MqttExampleClient m_client;
+
+        public ExampleMqttPublisherService()
         {
-            string logfilePath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "logfile.json");
-            var exampleLogger = new ExampleConsoleLogger();
-            var examplePersister = new ExampleFilePersister(logfilePath);
-            var exampleSensorValidator = new ExampleSensorValidator(exampleLogger, 1000);
-            var exampleStatusMonitor = new ExampleMqttStatusMonitor(exampleLogger);
+            m_exampleLogger = new ExampleConsoleLogger();
+            m_examplePersister = new ExampleNonFilePersister();
+            m_exampleSensorValidator = new ExampleSensorValidator(m_exampleLogger, 5000);
+            m_exampleStatusMonitor = new ExampleMqttStatusMonitor(m_exampleLogger);
 
-            var publisher = new MqttExampleClient.MqttExampleClient(exampleLogger, examplePersister, exampleSensorValidator, exampleStatusMonitor);
-            publisher.connect().Wait();
-
-            sendTemperature(publisher);
+            m_client = new MqttExampleClient.MqttExampleClient(m_exampleLogger, m_examplePersister, m_exampleSensorValidator, m_exampleStatusMonitor);
         }
 
-        private void sendTemperature(MqttExampleClient.MqttExampleClient publisher)
+        public void startPublisher()
+        {
+            m_client.connect().Wait();
+            m_client.attachSubscriber("response", false).Wait();
+
+            sendTemperature();
+        }
+
+        private void sendTemperature()
         {
             Random r = new Random();
             double range = 100;
@@ -40,6 +50,23 @@ namespace mqtt_publisher
             {
                 while (true)
                 {
+
+                    if (!m_exampleSensorValidator.anyDataReceived())
+                    {
+                        m_exampleLogger.Log("No subscriber attached.");
+                    }
+                    
+                    if (m_exampleSensorValidator.IsTimeout())
+                    {
+                        m_exampleLogger.Log("Timeout of subscriber..");
+                    }
+
+                    if (m_exampleSensorValidator.anyDataReceived() && !m_exampleSensorValidator.getLastSequenceNumberReceived().Equals(sequenceNumber))
+                    {
+                        // error resolution.. message lost? client too slow? network slow?
+                        m_exampleLogger.Log("Cannot confirm that a subscriber is in sync.");
+                    }
+
                     var randomTemp = (((r.NextDouble() * 2) - 1.0) * range);
 
                     sequenceNumber = sequenceNumber > Int32.MaxValue ? 0 : ++sequenceNumber;
@@ -49,7 +76,7 @@ namespace mqtt_publisher
                         m_sequenceNumber = sequenceNumber
                     };
                     string jsonString = JsonSerializer.Serialize(msg);
-                    publisher.sendMessage(jsonString);
+                    m_client.sendMessage(jsonString, "exampleTemp");
                     await Task.Delay(500);
                 }
             });

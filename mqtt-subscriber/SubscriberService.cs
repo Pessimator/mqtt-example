@@ -44,7 +44,7 @@ namespace mqtt_subscriber
                 m_subscriber = new MqttExampleClient.MqttExampleClient(m_exampleLogger, m_examplePersister, m_exampleSensorValidator, m_exampleStatusMonitor);
                 validateTimeout(m_exampleSensorValidator);
                 m_subscriber.connect().Wait();
-                m_subscriber.attachSubscriber().Wait();
+                m_subscriber.attachSubscriber("exampleTemp", true).Wait();
             }
         }
 

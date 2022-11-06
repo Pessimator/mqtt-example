@@ -48,30 +48,33 @@ public class MqttExampleClient
     }
 
 
-    public void sendMessage(string message)
+    public void sendMessage(string message, string topic)
     {
         var applicationMessage = new MqttApplicationMessageBuilder()
-       .WithTopic("topic")
+       .WithTopic(topic)
        .WithPayload(message)
        .Build();
         m_mqttClient.PublishAsync(applicationMessage, CancellationToken.None);
-        m_logger.Log("Message sent.");
+        m_logger.Log("[" + topic + "] Sent message: " + message);
     }
 
-    public async Task attachSubscriber()
+    public async Task attachSubscriber(string topic, bool subscriber)
     {
         m_mqttClient.ApplicationMessageReceivedAsync += e =>
         {
-            m_logger.Log("Received application message.");
             var timestamp = DateTime.Now.ToLocalTime();
             string decodedPayload = Encoding.UTF8.GetString(e.ApplicationMessage.Payload);
-            var msg = JsonSerializer.Deserialize(decodedPayload, typeof(ExampleMsg));
-
-            m_logger.Log(decodedPayload, timestamp);
+            var msg = JsonSerializer.Deserialize<ExampleMsg>(decodedPayload);
+            m_logger.Log("[" + topic + "] Received message: " + decodedPayload);
             m_persister.WriteOut(decodedPayload);
-            m_validator.updateTimestamp(timestamp);
-            m_monitor.addTemperatureMessage((ExampleMsg)msg);
-
+            m_validator.updateTimestamp(timestamp, msg.m_sequenceNumber);
+            m_monitor.addTemperatureMessage(msg);
+            
+            
+            if (subscriber)
+            {
+                sendMessage(decodedPayload, "response");
+            }
             return Task.CompletedTask;
         };
 
@@ -79,10 +82,10 @@ public class MqttExampleClient
         .WithTopicFilter(
         f =>
         {
-            f.WithTopic("topic");
+            f.WithTopic(topic);
         })
         .Build();
         await m_mqttClient.SubscribeAsync(mqttSubscribeOptions, CancellationToken.None);
-        m_logger.Log("Subscriber attached.");        
+        m_logger.Log("Subscriber attached to tpic: " + topic);        
     }
 }
